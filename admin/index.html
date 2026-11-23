@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Administrativo | OBPC Pérola</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f3ed;
+  color: #183d31;
+}
+
+header {
+  background: #123d32;
+  color: white;
+  padding: 28px 18px;
+  text-align: center;
+}
+
+header h1 {
+  color: #e0bd72;
+  margin-bottom: 8px;
+}
+
+main {
+  max-width: 700px;
+  margin: auto;
+  padding: 22px 16px;
+}
+
+.card {
+  background: white;
+  padding: 22px;
+  border-radius: 14px;
+  margin-bottom: 18px;
+  box-shadow: 0 3px 12px #00000010;
+}
+
+h2 {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  margin: 14px 0 7px;
+  font-weight: bold;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+button {
+  background: #174735;
+  color: white;
+  border: none;
+  padding: 13px 18px;
+  border-radius: 8px;
+  margin-top: 16px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #28634b;
+}
+
+.aviso {
+  background: #eee5cc;
+  padding: 14px;
+  border-radius: 9px;
+  line-height: 1.5;
+}
+
+footer {
+  text-align: center;
+  padding: 22px;
+  color: #777;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>OBPC PÉROLA</h1>
+  <p>Painel Administrativo</p>
+  <p>Área da equipe de mídia</p>
+</header>
+
+<main>
+
+<div class="card">
+  <h2>Bem-vindo à administração!</h2>
+  <div class="aviso">
+    Este espaço será utilizado pela equipe autorizada
+    para organizar as informações da igreja.
+  </div>
+</div>
+
+<div class="card">
+  <h2>Gerenciar avisos</h2>
+
+  <label for="titulo">Título do aviso</label>
+  <input id="titulo" type="text"
+  placeholder="Ex.: Conferência de Jovens">
+
+  <label for="mensagem">Mensagem</label>
+  <textarea id="mensagem" rows="4"
+  placeholder="Escreva o aviso aqui..."></textarea>
+
+  <button onclick="publicarAviso()">
+    Publicar aviso
+  </button>
+
+  <div id="resultado"></div>
+</div>
+
+<div class="card">
+  <h2>Áreas administrativas</h2>
+  <p>📅 Calendário de cultos</p>
+  <p>🎉 Eventos e conferências</p>
+  <p>🍞 Santa Ceia</p>
+  <p>📸 Galeria de fotos</p>
+  <p>🙏 Pedidos de oração</p>
+  <p>📢 Comunicados</p>
+</div>
+
+</main>
+
+<footer>
+  OBPC PÉROLA — O BRASIL PARA CRISTO
+</footer>
+
+<script>
+function publicarAviso() {
+  const titulo = document.getElementById("titulo").value.trim();
+  const mensagem = document.getElementById("mensagem").value.trim();
+  const resultado = document.getElementById("resultado");
+
+  if (!titulo || !mensagem) {
+    resultado.textContent = "Preencha todos os campos.";
+    return;
+  }
+
+  resultado.textContent = "Aviso preparado: " + titulo +
+    ". A publicação compartilhada ainda precisa ser configurada.";
+}
+</script>
+
+</body>
+  </html>
+  
