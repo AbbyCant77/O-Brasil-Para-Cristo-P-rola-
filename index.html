@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OBPC PÉROLA</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f6f4ed;
+  color: #183b30;
+}
+
+header {
+  background: #123d32;
+  color: white;
+  text-align: center;
+  padding: 35px 15px;
+}
+
+header h1 {
+  color: #d8b66a;
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+header p {
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+nav {
+  background: #1b4b3c;
+  padding: 14px 8px;
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.hero {
+  background: linear-gradient(135deg, #123d32, #28634b);
+  color: white;
+  text-align: center;
+  padding: 55px 20px;
+}
+
+.hero h2 {
+  color: #e4c77f;
+  font-size: 27px;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  line-height: 1.6;
+}
+
+section {
+  padding: 30px 18px;
+  max-width: 850px;
+  margin: auto;
+}
+
+h2.titulo {
+  text-align: center;
+  margin-bottom: 22px;
+  color: #174735;
+}
+
+.card {
+  background: white;
+  padding: 19px;
+  margin-bottom: 13px;
+  border-radius: 12px;
+  border-left: 4px solid #c7a45b;
+  box-shadow: 0 3px 12px #0000000c;
+}
+
+.card h3 {
+  margin-bottom: 8px;
+  color: #174735;
+}
+
+.card p {
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.horario {
+  color: #9a7835;
+  font-weight: bold;
+}
+
+.aviso {
+  background: #eee5cc;
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+  line-height: 1.7;
+}
+
+.versiculo {
+  background: #123d32;
+  color: white;
+  text-align: center;
+  padding: 28px 20px;
+  border-radius: 12px;
+  line-height: 1.7;
+}
+
+.versiculo h3 {
+  color: #e4c77f;
+  margin-bottom: 12px;
+}
+
+footer {
+  background: #123d32;
+  color: white;
+  text-align: center;
+  padding: 25px 15px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+footer strong {
+  color: #e4c77f;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>OBPC PÉROLA</h1>
+  <p>O BRASIL PARA CRISTO</p>
+</header>
+
+<nav>
+  <a href="#inicio">Início</a>
+  <a href="#cultos">Cultos</a>
+  <a href="#ceia">Santa Ceia</a>
+  <a href="#eventos">Eventos</a>
+  <a href="#contato">Contato</a>
+</nav>
+
+<div class="hero" id="inicio">
+  <h2>Seja bem-vindo!</h2>
+  <p>
+    Uma igreja, uma família, uma missão.<br>
+    Aqui você encontra nossa programação,
+    eventos e informações.
+  </p>
+</div>
+
+<section id="cultos">
+  <h2 class="titulo">Nossos cultos</h2>
+
+  <div class="card">
+    <h3>Segunda-feira — Culto das Mulheres</h3>
+    <p class="horario">20:00</p>
+  </div>
+
+  <div class="card">
+    <h3>Terça-feira — Tarde da Bênção</h3>
+    <p class="horario">15:00</p>
+  </div>
+
+  <div class="card">
+    <h3>Quarta-feira — Noite da Bênção</h3>
+    <p class="horario">20:00</p>
+  </div>
+
+  <div class="card">
+    <h3>Sexta-feira — Culto de Intercessão</h3>
+    <p class="horario">20:00</p>
+    <p>Realizado somente na sexta-feira anterior à Santa Ceia.</p>
+  </div>
+
+  <div class="card">
+    <h3>Sábado — Culto de Jovens</h3>
+    <p class="horario">19:00</p>
+  </div>
+
+  <div class="card">
+    <h3>Domingo — Culto de Celebração</h3>
+    <p class="horario">19:00</p>
+  </div>
+</section>
+
+<section id="ceia">
+  <h2 class="titulo">Santa Ceia</h2>
+
+  <div class="aviso">
+    <h3>Um momento especial de comunhão</h3>
+    <p>
+      Nossa Santa Ceia acontece sempre
+      no primeiro domingo de cada mês.
+    </p>
+    <p class="horario">Horário: 19:00</p>
+    <p id="proxima-ceia"></p>
+  </div>
+</section>
+
+<section id="eventos">
+  <h2 class="titulo">Eventos e conferências</h2>
+
+  <div class="card">
+    <h3>Programação especial</h3>
+    <p>
+      Em breve, novidades sobre conferências,
+      encontros, festividades e eventos da igreja.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2 class="titulo">Palavra do dia</h2>
+
+  <div class="versiculo">
+    <h3>Salmos 133:1</h3>
+    <p>
+      "Oh! Quão bom e quão suave é que os irmãos
+      vivam em união."
+    </p>
+  </div>
+</section>
+
+<section id="contato">
+  <h2 class="titulo">Onde estamos</h2>
+
+  <div class="card">
+    <h3>OBPC — Pérola</h3>
+    <p>
+      Avenida Robert Koch, 1315<br>
+      Londrina — Paraná
+    </p>
+  </div>
+</section>
+
+<footer>
+  <strong>OBPC PÉROLA</strong>
+  <p>O BRASIL PARA CRISTO</p>
+  <p>Uma igreja, uma família, uma missão.</p>
+  <p>© 2026 — Todos os direitos reservados.</p>
+</footer>
+
+<script>
+function proximaSantaCeia() {
+  const hoje = new Date();
+  let ano = hoje.getFullYear();
+  let mes = hoje.getMonth();
+
+  let primeiraData = new Date(ano, mes, 1);
+
+  let primeiroDomingo =
+    1 + (7 - primeiraData.getDay()) % 7;
+
+  let dataCeia = new Date(ano, mes, primeiroDomingo);
+
+  if (hoje > dataCeia) {
+    mes++;
+
+    if (mes > 11) {
+      mes = 0;
+      ano++;
+    }
+
+    primeiraData = new Date(ano, mes, 1);
+
+    primeiroDomingo =
+      1 + (7 - primeiraData.getDay()) % 7;
+
+    dataCeia = new Date(ano, mes, primeiroDomingo);
+  }
+
+  return dataCeia.toLocaleDateString("pt-BR");
+}
+
+document.getElementById("proxima-ceia").textContent =
+  "Próxima Santa Ceia: " + proximaSantaCeia();
+</script>
+
+</body>
+</html>
