@@ -140,6 +140,41 @@ footer {
 </div>
 
 <div class="card">
+  <h2>Gerenciar eventos e conferências</h2>
+
+  <label for="evento-titulo">Nome do evento</label>
+  <input id="evento-titulo" type="text"
+    placeholder="Ex.: Conferência de Jovens">
+
+  <label for="evento-data">Data do evento</label>
+  <input id="evento-data" type="date">
+
+  <label for="evento-hora">Horário</label>
+  <input id="evento-hora" type="time">
+
+  <label for="evento-local">Local</label>
+  <input id="evento-local" type="text"
+    placeholder="Local do evento">
+
+  <label for="evento-descricao">Descrição</label>
+  <textarea id="evento-descricao" rows="4"
+    placeholder="Informações sobre o evento..."></textarea>
+
+  <button id="publicar-evento" type="button">
+    Publicar evento
+  </button>
+
+  <div id="resultado-evento"></div>
+
+  <hr>
+
+  <h3>Eventos publicados</h3>
+  <div id="lista-eventos-admin">
+    Carregando eventos...
+  </div>
+</div>
+    
+<div class="card">
   <h2>Áreas administrativas</h2>
   <p>📅 Calendário de cultos</p>
   <p>🎉 Eventos e conferências</p>
@@ -224,6 +259,143 @@ async function publicarAviso() {
   await import("https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js");
 
 const bancoAvisos = getFirestore(app);
+    const eventosRef = collection(bancoAvisos, "Eventos");
+onSnapshot(eventosRef, (snapshot) => {
+  const lista = document.getElementById("lista-eventos-admin");
+  lista.replaceChildren();
+
+  if (snapshot.empty) {
+    lista.textContent = "Nenhum evento publicado.";
+    return;
+  }
+
+  snapshot.forEach((documento) => {
+    const evento = documento.data();
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const titulo = document.createElement("h3");
+    titulo.textContent = evento.titulo || "Evento";
+
+    const detalhes = document.createElement("p");
+    detalhes.textContent =
+      "📅 " + (evento.data || "Sem data") +
+      " | 🕒 " + (evento.hora || "Sem horário");
+
+    const local = document.createElement("p");
+    local.textContent = "📍 " + (evento.local || "Sem local");
+
+    const descricao = document.createElement("p");
+    descricao.textContent = evento.descricao || "";
+
+    const editar = document.createElement("button");
+editar.textContent = "Editar";
+
+editar.onclick = async () => {
+  const novoTitulo = prompt("Nome do evento:", evento.titulo || "");
+  if (novoTitulo === null) return;
+
+  const novaData = prompt("Data (AAAA-MM-DD):", evento.data || "");
+  if (novaData === null) return;
+
+  const novaHora = prompt("Horário (HH:MM):", evento.hora || "");
+  if (novaHora === null) return;
+
+  const novoLocal = prompt("Local:", evento.local || "");
+  if (novoLocal === null) return;
+
+  const novaDescricao = prompt("Descrição:", evento.descricao || "");
+  if (novaDescricao === null) return;
+
+  if (!novoTitulo.trim() || !novaData.trim() ||
+      !novaHora.trim() || !novoLocal.trim() ||
+      !novaDescricao.trim()) {
+    alert("Preencha todos os campos.");
+    return;
+  }
+
+  try {
+    await updateDoc(doc(bancoAvisos, "Eventos", documento.id), {
+      titulo: novoTitulo.trim(),
+      data: novaData.trim(),
+      hora: novaHora.trim(),
+      local: novoLocal.trim(),
+      descricao: novaDescricao.trim()
+    });
+
+    alert("Evento atualizado com sucesso!");
+  } catch (error) {
+    alert("Não foi possível editar o evento.");
+    console.error(error);
+  }
+};
+
+const excluir = document.createElement("button");
+excluir.textContent = "Excluir";
+excluir.style.backgroundColor = "#b91c1c";
+excluir.style.color = "white";
+
+excluir.onclick = async () => {
+  if (!confirm("Deseja realmente excluir este evento?")) return;
+
+  try {
+    await deleteDoc(doc(bancoAvisos, "Eventos", documento.id));
+    alert("Evento excluído com sucesso!");
+  } catch (error) {
+    alert("Não foi possível excluir o evento.");
+    console.error(error);
+  }
+};
+
+card.append(titulo, detalhes, local, descricao, editar, excluir);
+    lista.appendChild(card);
+  });
+}, (error) => {
+  console.error(error);
+  document.getElementById("lista-eventos-admin").textContent =
+    "Não foi possível carregar os eventos.";
+});
+
+document.getElementById("publicar-evento").addEventListener("click", async () => {
+  const titulo = document.getElementById("evento-titulo").value.trim();
+  const data = document.getElementById("evento-data").value;
+  const hora = document.getElementById("evento-hora").value;
+  const local = document.getElementById("evento-local").value.trim();
+  const descricao = document.getElementById("evento-descricao").value.trim();
+  const resultado = document.getElementById("resultado-evento");
+
+  if (!titulo || !data || !hora || !local || !descricao) {
+    resultado.textContent = "Preencha todos os campos.";
+    return;
+  }
+
+  resultado.textContent = "Publicando evento...";
+
+  try {
+    await addDoc(eventosRef, {
+      titulo,
+      data,
+      hora,
+      local,
+      descricao,
+      criadoEm: serverTimestamp()
+    });
+
+    resultado.textContent = "Evento publicado com sucesso!";
+
+    document.getElementById("evento-titulo").value = "";
+    document.getElementById("evento-data").value = "";
+    document.getElementById("evento-hora").value = "";
+    document.getElementById("evento-local").value = "";
+    document.getElementById("evento-descricao").value = "";
+
+  } catch (error) {
+    resultado.textContent = "Não foi possível publicar o evento.";
+    console.error(error);
+  }
+});
+
 onSnapshot(collection(bancoAvisos, "Avisos"), (snapshot) => {
   const lista = document.getElementById("lista-avisos-admin");
   lista.replaceChildren();
