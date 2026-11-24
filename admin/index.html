@@ -103,6 +103,8 @@ footer {
   
 <main>
 
+  <div id="painel-admin" hidden>
+
 <div class="card">
   <h2>Bem-vindo à administração!</h2>
   <div class="aviso">
@@ -138,7 +140,8 @@ footer {
   <p>🙏 Pedidos de oração</p>
   <p>📢 Comunicados</p>
 </div>
-
+</div>
+    
 <section id="login-area">
   <h2>Área administrativa</h2>
   <p>Entre com seu e-mail e senha autorizados.</p>
@@ -218,6 +221,8 @@ function publicarAviso() {
 
   onAuthStateChanged(auth, async (user) => {
   const loginArea = document.getElementById("login-area");
+    const painelAdmin = document.getElementById("painel-admin");
+painelAdmin.hidden = true;
 
   if (!user) {
     loginArea.style.display = "block";
@@ -234,6 +239,7 @@ function publicarAviso() {
     const adminSnap = await getDoc(adminRef);
 
     if (adminSnap.exists() && adminSnap.data().ativo === true) {
+      painelAdmin.hidden = false;
       loginArea.innerHTML = `
         <h2>Bem-vindo ao painel administrativo!</h2>
         <p>Você está autenticado como administrador.</p>
@@ -241,7 +247,9 @@ function publicarAviso() {
       `;
 
       document.getElementById("sair").addEventListener("click", () => {
-        signOut(auth);
+        signOut(auth).then(() => {
+  window.location.reload();
+});
       });
     } else {
       loginArea.innerHTML = `
@@ -251,7 +259,9 @@ function publicarAviso() {
       `;
 
       document.getElementById("sair").addEventListener("click", () => {
-        signOut(auth);
+        signOut(auth).then(() => {
+  window.location.reload();
+});
       });
     }
   } catch (error) {
