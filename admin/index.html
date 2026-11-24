@@ -129,6 +129,14 @@ footer {
   </button>
 
   <div id="resultado"></div>
+
+<hr>
+
+<h3>Avisos publicados</h3>
+
+<div id="lista-avisos-admin">
+  Carregando avisos...
+</div> 
 </div>
 
 <div class="card">
@@ -212,10 +220,85 @@ async function publicarAviso() {
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-    const { getFirestore, collection, addDoc, serverTimestamp } =
+    const { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, doc, updateDoc, deleteDoc } =
   await import("https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js");
 
 const bancoAvisos = getFirestore(app);
+onSnapshot(collection(bancoAvisos, "Avisos"), (snapshot) => {
+  const lista = document.getElementById("lista-avisos-admin");
+  lista.replaceChildren();
+
+  if (snapshot.empty) {
+    lista.textContent = "Nenhum aviso publicado.";
+    return;
+  }
+
+  snapshot.forEach((documento) => {
+    const aviso = documento.data();
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const titulo = document.createElement("h3");
+    titulo.textContent = aviso.titulo || "Aviso";
+
+    const mensagem = document.createElement("p");
+    mensagem.textContent = aviso.mensagem || "";
+
+    const editar = document.createElement("button");
+editar.textContent = "Editar";
+
+editar.onclick = async () => {
+  const novoTitulo = prompt("Novo título:", aviso.titulo || "");
+  if (novoTitulo === null) return;
+
+  const novaMensagem = prompt("Nova mensagem:", aviso.mensagem || "");
+  if (novaMensagem === null) return;
+
+  if (!novoTitulo.trim() || !novaMensagem.trim()) {
+    alert("Preencha todos os campos.");
+    return;
+  }
+
+  try {
+    await updateDoc(doc(bancoAvisos, "Avisos", documento.id), {
+      titulo: novoTitulo.trim(),
+      mensagem: novaMensagem.trim()
+    });
+    alert("Aviso atualizado com sucesso!");
+  } catch (error) {
+    alert("Não foi possível editar o aviso.");
+    console.error(error);
+  }
+};
+
+const excluir = document.createElement("button");
+excluir.textContent = "Excluir";
+excluir.style.backgroundColor = "#b91c1c";
+excluir.style.color = "white";
+
+excluir.onclick = async () => {
+  if (!confirm("Deseja realmente excluir este aviso?")) return;
+
+  try {
+    await deleteDoc(doc(bancoAvisos, "Avisos", documento.id));
+    alert("Aviso excluído com sucesso!");
+  } catch (error) {
+    alert("Não foi possível excluir o aviso.");
+    console.error(error);
+  }
+};
+
+card.append(titulo, mensagem, editar, excluir);
+    lista.appendChild(card);
+  });
+}, (error) => {
+  console.error(error);
+  document.getElementById("lista-avisos-admin").textContent =
+    "Não foi possível carregar os avisos.";
+});
+
+
     window.salvarAviso = async function(titulo, mensagem) {
   if (!auth.currentUser) {
     throw new Error("Usuário não autenticado.");
