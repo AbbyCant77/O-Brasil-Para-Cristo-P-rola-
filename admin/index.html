@@ -215,6 +215,51 @@ function publicarAviso() {
 });
 
   console.log("Firebase do painel conectado!");
+
+  onAuthStateChanged(auth, async (user) => {
+  const loginArea = document.getElementById("login-area");
+
+  if (!user) {
+    loginArea.style.display = "block";
+    return;
+  }
+
+  try {
+    const { getFirestore, doc, getDoc } = await import(
+      "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js"
+    );
+
+    const db = getFirestore(app);
+    const adminRef = doc(db, "administradores", user.uid);
+    const adminSnap = await getDoc(adminRef);
+
+    if (adminSnap.exists() && adminSnap.data().ativo === true) {
+      loginArea.innerHTML = `
+        <h2>Bem-vindo ao painel administrativo!</h2>
+        <p>Você está autenticado como administrador.</p>
+        <button id="sair">Sair</button>
+      `;
+
+      document.getElementById("sair").addEventListener("click", () => {
+        signOut(auth);
+      });
+    } else {
+      loginArea.innerHTML = `
+        <h2>Acesso não autorizado</h2>
+        <p>Sua conta não possui permissão administrativa.</p>
+        <button id="sair">Sair</button>
+      `;
+
+      document.getElementById("sair").addEventListener("click", () => {
+        signOut(auth);
+      });
+    }
+  } catch (error) {
+    loginArea.innerHTML = "<p>Não foi possível verificar sua permissão. Tente novamente.</p>";
+    console.error(error);
+  }
+});
+    
 </script>
   
 </body>
