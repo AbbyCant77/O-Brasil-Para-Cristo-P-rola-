@@ -251,6 +251,14 @@ footer strong {
   </div>
 </section>
 
+  <section id="avisos">
+  <h2>📢 Avisos e comunicados</h2>
+
+  <div id="lista-avisos" class="aviso">
+    Carregando avisos...
+  </div>
+  </section>
+  
 <footer>
   <strong>OBPC PÉROLA</strong>
   <p>O BRASIL PARA CRISTO</p>
@@ -312,6 +320,40 @@ document.getElementById("proxima-ceia").textContent =
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
+    const { collection, onSnapshot } = await import(
+  "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js"
+);
+
+const avisosRef = collection(db, "Avisos");
+    onSnapshot(avisosRef, (snapshot) => {
+  const lista = document.getElementById("lista-avisos");
+  lista.replaceChildren();
+
+  if (snapshot.empty) {
+    lista.textContent = "Nenhum aviso publicado.";
+    return;
+  }
+
+  snapshot.forEach((documento) => {
+    const aviso = documento.data();
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const titulo = document.createElement("h3");
+    titulo.textContent = aviso.titulo || "Aviso";
+
+    const mensagem = document.createElement("p");
+    mensagem.textContent = aviso.mensagem || "";
+
+    card.append(titulo, mensagem);
+    lista.appendChild(card);
+  });
+}, (error) => {
+  document.getElementById("lista-avisos").textContent =
+    "Não foi possível carregar os avisos.";
+  console.error(error);
+});
 
   console.log("Firebase conectado!");
   
