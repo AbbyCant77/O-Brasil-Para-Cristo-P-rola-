@@ -230,7 +230,7 @@ function publicarAviso() {
     );
 
     const db = getFirestore(app);
-    const adminRef = doc(db, "administradores", user.uid);
+    const adminRef = doc(db, "Administradores", user.uid);
     const adminSnap = await getDoc(adminRef);
 
     if (adminSnap.exists() && adminSnap.data().ativo === true) {
